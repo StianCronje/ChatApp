@@ -1,14 +1,14 @@
 const mongo = require('mongodb').MongoClient;
-const assert = require('assert');
+const io = require('socket.io').listen(4000).sockets;
 
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://localhost/chat';
 const dbname = 'chat';
 
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
-users = [];
-connections = [];
+//Connect to DB
+mongo.connect(url, (err, db) => {
+    if(err){
+        throw err;
+    }
 
-server.listen(process.env.PORT || 3000);
+    console.log('MongoDB Connected...')
+});
