@@ -47,6 +47,8 @@ mongo.connect(url, function(err, client){
                         message: 'Message sent',
                         clear: true
                     })
+
+                    console.log(name + ":", message)
                 });
             }
         });

@@ -6,9 +6,19 @@ import './Chat.css';
 
 export default class Chat extends Component {
 
+    constructor(props) {
+        super(props)
+    }
+    
     
     componentDidMount() {
         console.log('Chat component mounted...');
+
+        this.props.socket.on('output', function(data){
+            console.table(data);
+        });
+
+        // this.props.socket.emit('input', {name: 'user', message: 'message2'});
     }
     
 
