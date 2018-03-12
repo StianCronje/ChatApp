@@ -5,7 +5,7 @@ const url = 'mongodb://localhost/chat';
 const dbname = 'chat';
 
 //Connect to DB
-mongo.connect(url, (err, db) => {
+mongo.connect(url, function(err, db){
     if(err){
         throw err;
     }
