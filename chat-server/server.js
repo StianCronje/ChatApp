@@ -1,13 +1,16 @@
 const mongo = require('mongodb').MongoClient;
 const io = require('socket.io').listen(4000).sockets;
 
-const url = 'mongodb://localhost/chat';
+const url = 'mongodb://localhost:27017';
+const dbName = 'chat';
 
 //Connect to DB
-mongo.connect(url, function(err, db){
+mongo.connect(url, function(err, client){
     if(err){
         throw err;
     }
+
+    let db = client.db(dbName);
 
     console.log('MongoDB Connected...')
 

@@ -9,7 +9,6 @@
   "author": "Stian Cronje",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^3.0.4",
     "socket.io": "*"
   }
 }
