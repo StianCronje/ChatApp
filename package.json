@@ -1,0 +1,19 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StianCronje/ChatApp.git"
+  },
+  "author": "Stian Cronje",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StianCronje/ChatApp/issues"
+  },
+  "homepage": "https://github.com/StianCronje/ChatApp#readme",
+  "description": ""
+}
