@@ -51,7 +51,7 @@ export default class Chat extends Component {
             // Handle output
             socket.on('output', (data) => {
                 if(data.length){
-                    for(var i = 0; i < data.length; i++){
+                    for(let i = 0; i < data.length; i++){
                         this.printMessage(data[i]);
                     }
                 }                
@@ -69,7 +69,7 @@ export default class Chat extends Component {
             });
         }
 
-        // handle input
+        // Handle input
         const textArea = document.querySelector('#text-area');
         // const submitButton = document.querySelector('.submit')
         textArea.addEventListener('keydown', (event) => {
@@ -84,6 +84,21 @@ export default class Chat extends Component {
             //     })
             // }
         })
+
+        // Handle deletion
+        socket.on('deleted', (data) => {
+            let newState = this.state;
+            
+            for(let i = newState.messages.length - 1; i >= 0; i--) {
+                if(newState.messages[i]._id === data._id) {
+                    newState.messages.splice(i, 1);
+                    console.log('remove', i);
+                }
+                console.table(newState.messages[i]);
+            }
+
+            this.setState(newState);
+        });
     }
 
     submitHandler(){
