@@ -1,5 +1,5 @@
-const mondodb = require('mongodb');
-const mongoClient = mondodb.MongoClient;
+const mongodb = require('mongodb');
+const mongoClient = mongodb.MongoClient;
 const io = require('socket.io').listen(4000).sockets;
 
 const url = 'mongodb://localhost:27017';
