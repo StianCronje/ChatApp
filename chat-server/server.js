@@ -41,7 +41,11 @@ mongoClient.connect(url, function (err, client) {
             if (name == '' || message == '') {
                 sendStatus('Please enter a name and message');
             } else {
-                chat.insert({ name: name, message: message }, function () {
+                chat.insert({ name: name, message: message }, function (err, res) {
+                    if(err){
+                        throw err;
+                    }
+                    console.log(res);
                     io.emit('output', [data]);
 
                     sendStatus({
