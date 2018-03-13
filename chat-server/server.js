@@ -45,8 +45,8 @@ mongoClient.connect(url, function (err, client) {
                     if(err){
                         throw err;
                     }
-                    console.log(res);
-                    io.emit('output', [data]);
+                    console.log(res.ops[0]);
+                    io.emit('output', res.ops[0]);
 
                     sendStatus({
                         message: 'Message sent',
