@@ -20,6 +20,7 @@ export default class Chat extends Component {
         this.userChangeHandler = this.userChangeHandler.bind(this);
         this.chatChangeHandler = this.chatChangeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.deleteMessage = this.deleteMessage.bind(this);
     }
 
     
@@ -71,7 +72,7 @@ export default class Chat extends Component {
         // handle input
         const textArea = document.querySelector('#text-area');
         // const submitButton = document.querySelector('.submit')
-        textArea.addEventListener("keydown", (event) => {
+        textArea.addEventListener('keydown', (event) => {
             if (event.keyCode === 13 && !event.shiftKey) {
                 this.submitHandler();
                 event.preventDefault();
@@ -86,7 +87,7 @@ export default class Chat extends Component {
     }
 
     submitHandler(){
-        console.log("submit --", this.state.username + ":", this.state.chatInput);
+        console.log('submit --', this.state.username + ':', this.state.chatInput);
 
         this.props.socket.emit('input', {
             name: this.state.username,
@@ -121,6 +122,12 @@ export default class Chat extends Component {
         this.setState(state)
     }
 
+    deleteMessage(data){
+        console.log('delete: ', data);
+
+        this.props.socket.emit('delete', data);
+    }
+
     render() {        
         return (
             <div className="chat">
@@ -134,7 +141,10 @@ export default class Chat extends Component {
                                     <div id="messages" className="card-block">
                                         {
                                             this.state.messages.map((data, index) => {
-                                                return <div className="chat-message" key={index}>{data.name + ": " + data.message}</div>
+                                                return <div className="chat-message" key={index}>
+                                                    {data.name + ": " + data.message}
+                                                    <button className="btn btn-sm btn-outline-danger float-right" onClick={() => this.deleteMessage(data)}>X</button>
+                                                </div>
                                             })
                                         }
                                     </div>

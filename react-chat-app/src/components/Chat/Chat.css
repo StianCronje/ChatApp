@@ -8,5 +8,12 @@
 
 #messages{
     height: 300px;
-    padding-left: 10px;
+    padding: 0 10px;
+}
+
+.chat-message{
+    margin: 5px 0;
+}
+.chat-message button{
+    line-height: 1;
 }

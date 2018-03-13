@@ -52,5 +52,12 @@ mongo.connect(url, function(err, client){
                 });
             }
         });
+
+        // Handle delete message
+        socket.on('delete', function(data){
+            chat.remove(data, function(){
+                socket.emit('deleted');
+            })
+        })
     })
 });
