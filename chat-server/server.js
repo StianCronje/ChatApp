@@ -56,8 +56,7 @@ mongo.connect(url, function(err, client){
         // Handle delete message
         socket.on('delete', function(data){
             chat.remove({_id: data._id}, function(){
-                console.log('deleted message');
-                console.table(data);
+                console.log('deleted message with id:', data._id);
                 socket.emit('deleted');
             })
         })
