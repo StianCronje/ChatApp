@@ -2,21 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FormsChatApp.Views.ChatPage"
+             x:Name="ChatContentPage"
+             Title="Chat"
              xmlns:viewModels="clr-namespace:FormsChatApp.ViewModels">
     <ContentPage.BindingContext>
         <viewModels:ChatViewModel/>
     </ContentPage.BindingContext>
 
     <StackLayout>
-        <Label Text="Welcome to Xamarin.Forms! Chat Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        <Entry x:Name="NameEntry"
-               Text="{Binding Name}"/>
-        <Label x:Name="Message"
-               Text="{Binding Message}"/>
-        <Button x:Name="TestButton"
-                Text="Test"
-                Command="{Binding TestCommand}"/>
+        <ListView x:Name="ListView" 
+                  ItemsSource="{Binding Messages}" 
+                  ItemSelected="ListView_OnItemSelected" 
+                  ItemTapped="ListView_OnItemTapped"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding MessageContent}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Delete" 
+                                      IsDestructive="True" 
+                                      Command="{Binding Path=BindingContext.DeleteMessageCommand, Source={x:Reference ChatContentPage}}"
+                                      CommandParameter="{Binding .}"/>
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Entry Text="{Binding MessageText}" Keyboard="Chat"/>
+        <Button Text="Send" Command="{Binding SubmitCommand}"/>
     </StackLayout>
 </ContentPage>

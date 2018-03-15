@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using FormsChatApp.Views;
+using Xamarin.Forms;
 
 namespace FormsChatApp
 {
@@ -8,7 +9,7 @@ namespace FormsChatApp
 		{
 			InitializeComponent();
 
-			MainPage = new Views.ChatPage();
+			MainPage = new NavigationPage(new ChatPage());
 		}
 
 		protected override void OnStart ()

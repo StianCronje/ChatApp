@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FormsChatApp.Models
+﻿namespace FormsChatApp.Models
 {
-    class Message
+    public class Message
     {
+        public string Name { get; set; }
+        public string MessageContent { get; set; }
+
+        public Message(string name, string messageContent)
+        {
+            Name = name;
+            MessageContent = messageContent;
+        }
     }
 }
