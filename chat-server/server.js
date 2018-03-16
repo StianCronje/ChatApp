@@ -35,8 +35,10 @@ mongoClient.connect(url, function (err, client) {
 
         // Handle input events
         socket.on('input', function (data) {
-            let name = data.name;
-            let message = data.message;
+            let json = JSON.parse(data);
+
+            let name = json.name;
+            let message = json.message;
 
             if (name == '' || message == '') {
                 sendStatus('Please enter a name and message');
@@ -60,10 +62,11 @@ mongoClient.connect(url, function (err, client) {
 
         // Handle delete message
         socket.on('delete', function (data) {
-            chat.deleteOne({ _id: new mongodb.ObjectID(data._id) }, function () {
-                console.log('deleted message with id:', data._id);
+            let json = JSON.parse(data);
+            chat.deleteOne({ _id: new mongodb.ObjectID(json._id) }, function () {
+                console.log('deleted message with id:', json._id);
             })
-            socket.emit('deleted', data);
+            socket.emit('deleted', json);
         })
     })
 });

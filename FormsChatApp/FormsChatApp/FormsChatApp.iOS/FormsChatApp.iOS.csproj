@@ -119,12 +119,20 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
+    <PackageReference Include="SocketIoClientDotNet">
+      <Version>1.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>2.5.0.280555</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\FormsChatApp\FormsChatApp.csproj">
-      <Project>{D366CE75-E431-4E94-8FA0-F366CB940755}</Project>
+      <Project>{019F02EF-E00E-4ABA-A2A3-8F61A4E5ABB1}</Project>
       <Name>FormsChatApp</Name>
     </ProjectReference>
   </ItemGroup>

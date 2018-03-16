@@ -4,9 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using FormsChatApp.Annotations;
+//using FormsChatApp.Annotations;
+using Quobject.SocketIoClientDotNet.Client;
+using Newtonsoft.Json;
 using FormsChatApp.Models;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace FormsChatApp.ViewModels
 {
@@ -14,16 +17,11 @@ namespace FormsChatApp.ViewModels
     {
         public Action<ObservableCollection<Message>> OnMessageInsertAction;
 
+        public Socket socket;
+
         private string _messageText;
-        private ObservableCollection<Message> _messages = new ObservableCollection<Message>()
-        {
-            new Message("Stian", "Some Text"),
-            new Message("Stian", "Some Text 2"),
-            new Message("Stian", "More Text"),
-            new Message("Stian", "Testing"),
-            new Message("Stian", "Hi there this is some long text")
-        };
-        
+        private ObservableCollection<Message> _messages = new ObservableCollection<Message>();
+
 
         public ObservableCollection<Message> Messages
         {
@@ -47,19 +45,63 @@ namespace FormsChatApp.ViewModels
             }
         }
 
-        public Command SubmitCommand => new Command(() => {
-            Debug.WriteLine("Submit: " + MessageText);
-            Messages.Add(new Message("Stian", MessageText));
-            OnMessageInsertAction?.Invoke(Messages);
+        public Command PageLoadCqommand => new Command(() =>
+        {
+            Debug.WriteLine("Page Loaded");
+
+
+            ProcessSockets();
         });
 
-        public Command<Message> DeleteMessageCommand => new Command<Message>(message => {
-            Messages.Remove(message);
+        public Command SubmitCommand => new Command(() => {
+            Debug.WriteLine("Submit: " + MessageText);
+            var message = new Message("Stian", MessageText);
+
+            var json = JsonConvert.SerializeObject(message);
+            Debug.WriteLine("send:" + json);
+            socket.Emit("input", json);
         });
+
+        public Command<Message> DeleteMessageCommand => new Command<Message>(message =>
+        {
+            var json = JsonConvert.SerializeObject(message);
+            Debug.WriteLine("delete: " + json);
+            socket.Emit("delete", json);
+        });
+
+
+
+        public void ProcessSockets()
+        {
+
+            socket = IO.Socket("http://stiancronje.com:4000");
+
+            socket.On("output", data => GetOutput(data));
+            socket.On("deleted", data => DeleteMessage(data));
+        }
+
+        public void GetOutput(object data)
+        {
+            var messages = JsonConvert.DeserializeObject<ObservableCollection<Message>>(data.ToString());
+            Console.WriteLine("got output: " + messages.Count);
+            for (int i = 0; i < messages.Count; i++)
+            {
+                Debug.WriteLine("json: " + messages[i]);
+                Messages.Add(messages[i]);
+            }
+            if (OnMessageInsertAction != null) OnMessageInsertAction(Messages);
+            //OnMessageInsertAction?.Invoke(Messages);
+        }
+
+        void DeleteMessage(object data)
+        {
+            var message = JsonConvert.DeserializeObject<Message>(data.ToString());
+            Messages.Remove(message);
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
+        //[NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

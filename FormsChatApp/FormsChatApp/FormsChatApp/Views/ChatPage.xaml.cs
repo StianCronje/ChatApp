@@ -15,18 +15,36 @@ namespace FormsChatApp.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ChatPage : ContentPage
 	{
+        ChatViewModel binding;
+
 		public ChatPage ()
 		{
 			InitializeComponent ();
 
-		    ((ChatViewModel) BindingContext).OnMessageInsertAction += (messages) =>
-		    {
-		        var index = messages.Count-1;
-		        ListView.ScrollTo(messages[index], ScrollToPosition.End, true);
-		    };
+            binding = (ChatViewModel)BindingContext;
+
+
 		}
 
-	    private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        protected override void OnAppearing()
+		{
+            base.OnAppearing();
+
+            binding.OnMessageInsertAction += (messages) =>
+            {
+                var index = messages.Count - 1;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+
+					ListView.ScrollTo(messages[index], ScrollToPosition.End, true);
+                });
+            };
+
+            binding.PageLoadCqommand.Execute(null);
+            Debug.WriteLine("test");
+		}
+
+		private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 	    {
 	        ListView.SelectedItem = null;
         }

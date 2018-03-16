@@ -104,10 +104,10 @@ export default class Chat extends Component {
     submitHandler(){
         console.log('submit --', this.state.username + ':', this.state.chatInput);
 
-        this.props.socket.emit('input', {
+        this.props.socket.emit('input', JSON.stringify({
             name: this.state.username,
             message: this.state.chatInput
-        })
+        }))
     }
 
     printMessage(message) {
@@ -140,7 +140,7 @@ export default class Chat extends Component {
     deleteMessage(data){
         console.log('delete: ', data);
 
-        this.props.socket.emit('delete', data);
+        this.props.socket.emit('delete', JSON.stringify(data));
     }
 
     render() {        
