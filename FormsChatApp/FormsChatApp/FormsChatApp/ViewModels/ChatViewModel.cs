@@ -9,7 +9,7 @@ using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 using FormsChatApp.Models;
 using Xamarin.Forms;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace FormsChatApp.ViewModels
 {
@@ -95,8 +95,15 @@ namespace FormsChatApp.ViewModels
 
         void DeleteMessage(object data)
         {
+            Debug.WriteLine("delete: " + data.ToString());
             var message = JsonConvert.DeserializeObject<Message>(data.ToString());
-            Messages.Remove(message);
+
+            for (int i = 0; i < Messages.Count; i++)
+            {
+                if(message.ID.Equals(Messages[i].ID)){
+                    Messages.RemoveAt(i);
+                }
+            }
         }
 
 
